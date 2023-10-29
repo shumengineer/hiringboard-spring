@@ -1,0 +1,90 @@
+<div class="bg-gray-100 min-h-screen p-4 lg:p-8">
+  <div class="container lg:px-5 mx-auto mt-8">
+
+    <h2 class="text-3xl font-bold mb-4">Jobs</h2>
+
+    <!-- Create Job Form -->
+    <div class="mb-8">
+      <button (click)="showJobForm = !showJobForm; !showJobForm && cancel();" class="btn btn-secondary px-8 btn-sm">Add
+        Job
+      </button>
+    </div>
+
+    <job-form *ngIf="showJobForm" [edit]="isEdit" [selectedJob]="selectedJob" (onChange)="handleSubmit()"
+              (onClose)="cancel()"/>
+
+    <!-- Jobs List -->
+    <div *ngIf="jobs$ | async as jobs">
+      <div class="overflow-x-auto">
+        <table class="w-full table-auto table">
+          <thead>
+          <tr>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Status</th>
+            <th class="px-4 py-2">Description</th>
+            <th class="px-4 py-2">Candidates</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let job of jobs.data">
+            <td class="px-4 py-2">{{ job.name }}</td>
+            <td class="px-4 py-2">{{ job.hiring ? "Hiring" : "Full"}}</td>
+            <td class="px-4 py-2">{{ job.description }}</td>
+            <td class="px-4 py-2">
+              <div class="flex flex-wrap gap-2">
+                <span *ngFor="let c of job.candidates | slice:0:4; let i=index">{{c.name}}</span>
+              </div>
+            </td>
+            <td class="px-4 py-2 flex flex-row flex-wrap gap-1">
+              <button (click)="editJob(job)" class="btn btn-primary btn-sm">Edit</button>
+              <button (click)="deleteJob(job)" class="btn btn-outline btn-sm">Delete</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+
+    <h2 class="text-3xl font-bold mb-4 mt-12">Candidates</h2>
+
+    <!-- Candidate Form -->
+    <div class="mb-8">
+      <button (click)="showCandidateForm = !showCandidateForm; !showCandidateForm && cancel();"
+              class="btn btn-secondary px-8 btn-sm">Add Candidate
+      </button>
+    </div>
+
+    <div *ngIf="jobs$ | async as jobs">
+      <candidate-form *ngIf="showCandidateForm" [edit]="isEdit" [jobs]="jobs.data"
+                      [selectedCandidate]="selectedCandidate" (onChange)="handleSubmit()" (onClose)="cancel()"/>
+    </div>
+
+    <!-- Candidate List -->
+    <div *ngIf="state$ | async as state">
+      <div class="overflow-x-auto">
+        <table class="w-full table-auto table">
+          <thead>
+          <tr>
+            <th class="px-4 py-2">Name</th>
+            <th class="px-4 py-2">Email</th>
+            <th class="px-4 py-2">Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let candidate of state?.candidates">
+            <td class="px-4 py-2">{{ candidate.name }}</td>
+            <td class="px-4 py-2">{{ candidate.email }}</td>
+            <td class="px-4 py-2 flex flex-row flex-wrap gap-1">
+              <button (click)="editCandidate(candidate)" class="btn btn-primary btn-sm">Edit</button>
+              <button (click)="deleteCandidate(candidate)" class="btn btn-outline btn-sm">Delete</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
