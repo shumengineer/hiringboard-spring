@@ -60,5 +60,5 @@ Once you have completed the steps above, you can access the HiringBoard applicat
 You are now ready to explore and interact with the HiringBoard project.
 
 ## Purpose
-
+This is a project used for study purposes only.
 The primary motivation for this project was to gain hands-on experience with the Spring framework.
